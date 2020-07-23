@@ -76,12 +76,12 @@ namespace RadioTerm
         }
         public string DeleteStationMenu(IEnumerable<Station> stations)
         {
-            if (stations.Count() == 0)
+            var stationList = stations.ToList();
+            var activeStation = stationList.Where(s => s.Active).FirstOrDefault();
+            if (activeStation == null)
             {
                 return "";
             }
-            var stationList = stations.ToList();
-            var activeStation = stationList.Where(s => s.Active).First();
             stationList.Remove(activeStation);
             int index = 0;
             ConsoleKeyInfo k = new ConsoleKeyInfo() ;
