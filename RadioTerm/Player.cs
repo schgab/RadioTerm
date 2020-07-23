@@ -30,7 +30,6 @@ namespace RadioTerm
         public Player(StationManager manager)
         {
             RadioStationManager = manager;
-            RadioStationManager.Reset();
         }
         public void Pause()
         {
@@ -53,12 +52,21 @@ namespace RadioTerm
 
         public void Play(Station s)
         {
+            if (s == null)
+            {
+                return;
+            }
             Stop();
             using(var mf = new MediaFoundationReader(s.Url))
             {
                 currentlyPlaying.Init(mf);
                 currentlyPlaying.Play();
             }
+        }
+
+        public void PlayLastActive()
+        {
+            Play(RadioStationManager.PlayingStation);
         }
 
         public void Stop()

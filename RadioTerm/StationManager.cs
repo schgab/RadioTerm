@@ -10,16 +10,24 @@ namespace RadioTerm
     {
         public List<Station> Stations { get; private set; }
 
-        public Station PlayingStation
+        private Station _playingStation;
+        public Station PlayingStation 
         {
             get
             {
-                return Stations[index];
+                if (_playingStation == null)
+                {
+                    SetLastActive();
+                }
+                return _playingStation;
+            }
+            private set
+            {
+                _playingStation = value;
             }
         }
-        private int index = 0;
 
-        
+
         public StationManager()
         {
             Stations = new List<Station>();
@@ -39,36 +47,45 @@ namespace RadioTerm
 
         public Station Next()
         {
-            Stations[index].Active = false;
-            index = (index + 1) % Stations.Count;
-            Stations[index].Active = true;
-            return Stations[index];
+            PlayingStation.Active = false;
+            PlayingStation = Stations.Next(PlayingStation);
+            PlayingStation.Active = true;
+            return PlayingStation;
         }
         public Station Previous()
         {
-            Stations[index].Active = false;
-            if(index == 0)
-            {
-                index = Stations.Count;
-            }
-            index--;
-            Stations[index].Active = true;
-            return Stations[index];
+            PlayingStation.Active = false;
+            PlayingStation = Stations.Previous(PlayingStation);
+            PlayingStation.Active = true;
+            return PlayingStation;
         }
 
         public void ToggleActive()
         {
-            Stations[index].Active = !Stations[index].Active;
+            PlayingStation.Active = !PlayingStation.Active;
         }
         public void DeleteStation(string name)
         {
             var st = Stations.FirstOrDefault(s => s.Name == name);
             if (st != null)
             {
+                
                 Stations.Remove(st);
+                
             }
         }
-
+        private void SetLastActive()
+        {
+            var s = Stations.Where(c => c.Active).FirstOrDefault();
+            if (s == null)
+            {
+                PlayingStation = Stations[0];
+            }
+            else
+            {
+                PlayingStation = s;
+            }
+        }
         public void Reset()
         {
             Stations.ForEach(c => c.Active = false);
