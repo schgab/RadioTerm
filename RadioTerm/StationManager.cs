@@ -10,7 +10,13 @@ namespace RadioTerm
     {
         public List<Station> Stations { get; private set; }
 
-        public Station PlayingStation { get; private set; }
+        public Station PlayingStation
+        {
+            get
+            {
+                return Stations[index];
+            }
+        }
         private int index = 0;
 
         
@@ -36,7 +42,6 @@ namespace RadioTerm
             Stations[index].Active = false;
             index = (index + 1) % Stations.Count;
             Stations[index].Active = true;
-            PlayingStation = Stations[index];
             return Stations[index];
         }
         public Station Previous()
@@ -48,7 +53,6 @@ namespace RadioTerm
             }
             index--;
             Stations[index].Active = true;
-            PlayingStation = Stations[index];
             return Stations[index];
         }
 
@@ -68,7 +72,6 @@ namespace RadioTerm
         public void Reset()
         {
             Stations.ForEach(c => c.Active = false);
-            PlayingStation = null;
         }
 
     }
