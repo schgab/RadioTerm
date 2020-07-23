@@ -10,50 +10,60 @@ namespace RadioTerm
     {
         public List<Station> Stations { get; private set; }
 
-        private Station _playingStation;
-        public Station PlayingStation 
-        {
-            get
-            {
-                if (_playingStation == null)
-                {
-                    SetLastActive();
-                }
-                return _playingStation;
-            }
-            private set
-            {
-                _playingStation = value;
-            }
-        }
+        public Station PlayingStation { get; set; }
 
 
         public StationManager()
         {
             Stations = new List<Station>();
         }
+
+        /// <summary>
+        /// Adds a Station object to the list
+        /// </summary>
+        /// <param name="station"></param>
         public void AddStation(Station station)
         {
             Stations.Add(station);
+            if (PlayingStation == null)
+            {
+                PlayingStation = station;
+            }
         }
+        /// <summary>
+        /// Adds a new station with the supplied name and url
+        /// </summary>
+        /// <param name="tuple"></param>
         public void AddStation((string name,string url) tuple)
         {
-            Stations.Add(new Station(tuple.name,tuple.url));
-        }
-        public void AddStation(IEnumerable<Station> stations)
-        {
-            Stations.AddRange(stations);
+            AddStation(new Station(tuple.name,tuple.url));
         }
 
+        /// <summary>
+        /// Returns the next station in the list or null if the list is empty
+        /// </summary>
+        /// <returns></returns>
         public Station Next()
         {
+            if (Stations.Count == 0)
+            {
+                return null;
+            }
             PlayingStation.Active = false;
             PlayingStation = Stations.Next(PlayingStation);
             PlayingStation.Active = true;
             return PlayingStation;
         }
+        /// <summary>
+        /// Returns the previous station in the list or null if the list is empty
+        /// </summary>
+        /// <returns></returns>
         public Station Previous()
         {
+            if (Stations.Count == 0)
+            {
+                return null;
+            }
             PlayingStation.Active = false;
             PlayingStation = Stations.Previous(PlayingStation);
             PlayingStation.Active = true;
@@ -64,32 +74,21 @@ namespace RadioTerm
         {
             PlayingStation.Active = !PlayingStation.Active;
         }
+
+        /// <summary>
+        /// Deletes all stations with the specified name
+        /// </summary>
+        /// <param name="name"></param>
         public void DeleteStation(string name)
         {
             var st = Stations.FirstOrDefault(s => s.Name == name);
             if (st != null)
             {
-                
                 Stations.Remove(st);
-                
             }
         }
-        private void SetLastActive()
-        {
-            var s = Stations.Where(c => c.Active).FirstOrDefault();
-            if (s == null)
-            {
-                PlayingStation = Stations[0];
-            }
-            else
-            {
-                PlayingStation = s;
-            }
-        }
-        public void Reset()
-        {
-            Stations.ForEach(c => c.Active = false);
-        }
+
+
 
     }
 }
