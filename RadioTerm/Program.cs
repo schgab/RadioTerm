@@ -12,19 +12,17 @@ namespace RadioTerm
     {
         static void Main(string[] args)
         {
-            StationManager stationManager = LoadUpAndEnd.Load("stations.json");
-            stationManager.Reset();
             DisplayEngine engine = new DisplayEngine();
-            Player player = new Player();
+            Player player = new Player(LoadUpAndEnd.Load("stations.json"));
             AvailableActions.PlayerAction k;
             bool run = true;
             do
             {
-                if (!IsThereAStation(stationManager))
+                if (!player.HasSomethingToPlay)
                 {
-                    stationManager.AddStation(engine.AddStationMenu());
+                    player.RadioStationManager.AddStation(engine.AddStationMenu());
                 }
-                engine.DrawMain(stationManager.Stations);
+                engine.DrawMain(player.RadioStationManager.Stations);
                 k = Console.ReadKey().ToPlayerAction();
                 switch (k)
                 {
@@ -32,8 +30,8 @@ namespace RadioTerm
                         run = false;
                         break;
                     case AvailableActions.PlayerAction.Add:
-                        stationManager.AddStation(engine.AddStationMenu());
-                        engine.DrawMain(stationManager.Stations);
+                        player.RadioStationManager.AddStation(engine.AddStationMenu());
+                        engine.DrawMain(player.RadioStationManager.Stations);
                         break;
                     case AvailableActions.PlayerAction.VolumeDown:
                         player.VolumeDown();
@@ -42,39 +40,25 @@ namespace RadioTerm
                         player.VolumeUp();
                         break;
                     case AvailableActions.PlayerAction.Next:
-                        var next = stationManager.Next();
-                        player.Play(next);
+                        player.Next();
                         break;
                     case AvailableActions.PlayerAction.Previous:
-                        var prev = stationManager.Previous();
-                        player.Play(prev);
+                        player.Previous();
                         break;
                     case AvailableActions.PlayerAction.Pause:
-                        if (stationManager.PlayingStation != null)
-                        {
-                            stationManager.ToggleActive();
-                            player.Pause();
-                        }   
+                        player.Pause();   
                         break;
                     case AvailableActions.PlayerAction.Delete:
-                        stationManager.DeleteStation(engine.DeleteStationMenu(stationManager.Stations));
-                        engine.DrawMain(stationManager.Stations);
+                        player.RadioStationManager.DeleteStation(engine.DeleteStationMenu(player.RadioStationManager.Stations));
+                        engine.DrawMain(player.RadioStationManager.Stations);
                         break;
                     default:
                         break;
                 }
 
             } while (run);
-            LoadUpAndEnd.Save(stationManager, "stations.json");
+            LoadUpAndEnd.Save(player.RadioStationManager, "stations.json");
         }
 
-        private static bool IsThereAStation(StationManager st)
-        {
-            if (st.Stations.Count == 0)
-            {
-                return false;
-            }
-            return true;
-        }
     }
 }

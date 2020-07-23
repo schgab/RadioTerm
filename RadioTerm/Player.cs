@@ -11,15 +11,38 @@ namespace RadioTerm
     {
 
         private WaveOutEvent currentlyPlaying = new WaveOutEvent();
+
+        public StationManager RadioStationManager { get; private set; }
+
+        private bool _HasSomethingToPlay;
+
+        public bool HasSomethingToPlay
+        {
+            get 
+            {
+                _HasSomethingToPlay = RadioStationManager.Stations.Count > 0;
+                return _HasSomethingToPlay; 
+            }
+            private set { _HasSomethingToPlay = value; }
+        }
+
+
+        public Player(StationManager manager)
+        {
+            RadioStationManager = manager;
+            RadioStationManager.Reset();
+        }
         public void Pause()
         {
             if(currentlyPlaying.PlaybackState == PlaybackState.Paused)
             {
                 currentlyPlaying.Play();
+                RadioStationManager.PlayingStation.Active = true;
             }
             else if(currentlyPlaying.PlaybackState == PlaybackState.Playing)
             {
                 currentlyPlaying.Pause();
+                RadioStationManager.PlayingStation.Active = false;
             }
         }
 
@@ -60,6 +83,16 @@ namespace RadioTerm
             {
                 currentlyPlaying.Volume += 0.1f;
             }
+        }
+
+        public void Next()
+        {
+            Play(RadioStationManager.Next());
+        }
+
+        public void Previous()
+        {
+            Play(RadioStationManager.Previous());
         }
     }
 }
