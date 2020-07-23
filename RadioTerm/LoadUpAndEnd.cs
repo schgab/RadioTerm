@@ -26,7 +26,10 @@ namespace RadioTerm
         {
             if (File.Exists(path))
             {
-                return ReadJsonObject<StationManager>(path);
+                var manager = ReadJsonObject<StationManager>(path);
+                //Fix reference to object in list
+                manager.PlayingStation = manager.Stations.Where(c => c.Url == manager.PlayingStation.Url).FirstOrDefault();
+                return manager;
             }
             else
             {

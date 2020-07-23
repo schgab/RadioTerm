@@ -30,6 +30,7 @@ namespace RadioTerm
         public Player(StationManager manager)
         {
             RadioStationManager = manager;
+           
         }
         public void Pause()
         {
@@ -50,23 +51,28 @@ namespace RadioTerm
             }
         }
 
+
         public void Play(Station s)
         {
-            if (s == null)
+            if (s is Station)
             {
-                return;
+                Stop();
+                using (var mf = new MediaFoundationReader(s.Url))
+                {
+                    currentlyPlaying.Init(mf);
+                    currentlyPlaying.Play();
+                }
             }
-            Stop();
-            using(var mf = new MediaFoundationReader(s.Url))
-            {
-                currentlyPlaying.Init(mf);
-                currentlyPlaying.Play();
-            }
+            
         }
 
         public void PlayLastActive()
         {
-            Play(RadioStationManager.PlayingStation);
+            if (RadioStationManager.PlayingStation is Station)
+            {
+                Play(RadioStationManager.PlayingStation);
+                RadioStationManager.PlayingStation.Active = true;
+            }
         }
 
         public void Stop()
@@ -100,12 +106,18 @@ namespace RadioTerm
 
         public void Next()
         {
-            Play(RadioStationManager.Next());
+            if (RadioStationManager.Next() is Station s)
+            {
+                Play(s);
+            }
         }
 
         public void Previous()
         {
-            Play(RadioStationManager.Previous());
+            if (RadioStationManager.Previous() is Station s)
+            {
+                Play(s);
+            }
         }
     }
 }

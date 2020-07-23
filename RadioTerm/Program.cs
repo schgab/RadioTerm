@@ -18,7 +18,7 @@ namespace RadioTerm
             bool run = true;
             if (!player.HasSomethingToPlay)
             {
-                player.RadioStationManager.AddStation(engine.AddStationMenu());
+               // player.RadioStationManager.AddStation(engine.AddStationMenu());
             }
             player.PlayLastActive();
             do
