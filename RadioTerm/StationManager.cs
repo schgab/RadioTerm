@@ -65,7 +65,7 @@ namespace RadioTerm
             }
         }
 
-        public void SetAllInactive()
+        public void Reset()
         {
             Stations.ForEach(c => c.Active = false);
             PlayingStation = null;
