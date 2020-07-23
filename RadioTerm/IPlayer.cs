@@ -8,6 +8,12 @@ namespace RadioTerm
 {
     public interface IPlayer
     {
+
+        bool HasSomethingToPlay
+        {
+            get;
+            
+        }
         void Play(Station s);
         void Stop();
         void Pause();
