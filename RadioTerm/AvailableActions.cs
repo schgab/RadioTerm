@@ -10,6 +10,7 @@ namespace RadioTerm
     {
         public enum PlayerAction
         {
+            None,
             Quit,
             Add,
             VolumeDown,

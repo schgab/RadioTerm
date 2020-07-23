@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="AvailableActions.cs" />
     <Compile Include="DisplayEngine.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="IPlayer.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />

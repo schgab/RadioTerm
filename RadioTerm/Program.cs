@@ -16,12 +16,13 @@ namespace RadioTerm
             Player player = new Player(LoadUpAndEnd.Load("stations.json"));
             AvailableActions.PlayerAction k;
             bool run = true;
+            if (!player.HasSomethingToPlay)
+            {
+                player.RadioStationManager.AddStation(engine.AddStationMenu());
+            }
+            player.PlayLastActive();
             do
             {
-                if (!player.HasSomethingToPlay)
-                {
-                    player.RadioStationManager.AddStation(engine.AddStationMenu());
-                }
                 engine.DrawMain(player.RadioStationManager.Stations);
                 k = Console.ReadKey().ToPlayerAction();
                 switch (k)
@@ -31,7 +32,7 @@ namespace RadioTerm
                         break;
                     case AvailableActions.PlayerAction.Add:
                         player.RadioStationManager.AddStation(engine.AddStationMenu());
-                        engine.DrawMain(player.RadioStationManager.Stations);
+                        //engine.DrawMain(player.RadioStationManager.Stations);
                         break;
                     case AvailableActions.PlayerAction.VolumeDown:
                         player.VolumeDown();
@@ -41,16 +42,19 @@ namespace RadioTerm
                         break;
                     case AvailableActions.PlayerAction.Next:
                         player.Next();
+                        //engine.DrawMain(player.RadioStationManager.Stations);
                         break;
                     case AvailableActions.PlayerAction.Previous:
                         player.Previous();
+                        //engine.DrawMain(player.RadioStationManager.Stations);
                         break;
                     case AvailableActions.PlayerAction.Pause:
-                        player.Pause();   
+                        player.Pause();
+                        //engine.DrawMain(player.RadioStationManager.Stations);
                         break;
                     case AvailableActions.PlayerAction.Delete:
                         player.RadioStationManager.DeleteStation(engine.DeleteStationMenu(player.RadioStationManager.Stations));
-                        engine.DrawMain(player.RadioStationManager.Stations);
+                        //engine.DrawMain(player.RadioStationManager.Stations);
                         break;
                     default:
                         break;
