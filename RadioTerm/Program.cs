@@ -16,10 +16,6 @@ namespace RadioTerm
             Player player = new Player(LoadUpAndEnd.Load("stations.json"));
             AvailableActions.PlayerAction k;
             bool run = true;
-            if (!player.HasSomethingToPlay)
-            {
-               // player.RadioStationManager.AddStation(engine.AddStationMenu());
-            }
             player.PlayLastActive();
             do
             {
