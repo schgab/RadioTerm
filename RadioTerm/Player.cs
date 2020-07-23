@@ -44,6 +44,11 @@ namespace RadioTerm
                 currentlyPlaying.Pause();
                 RadioStationManager.PlayingStation.Active = false;
             }
+            else if(currentlyPlaying.PlaybackState == PlaybackState.Stopped && HasSomethingToPlay)
+            {
+                Play(RadioStationManager.PlayingStation);
+                RadioStationManager.PlayingStation.Active = true;
+            }
         }
 
         public void Play(Station s)
