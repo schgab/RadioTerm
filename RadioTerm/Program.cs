@@ -13,7 +13,7 @@ namespace RadioTerm
         static void Main(string[] args)
         {
             StationManager stationManager = LoadUpAndEnd.Load("stations.json");
-            stationManager.SetAllInactive();
+            stationManager.Reset();
             DisplayEngine engine = new DisplayEngine();
             Player player = new Player();
             AvailableActions.PlayerAction k;
