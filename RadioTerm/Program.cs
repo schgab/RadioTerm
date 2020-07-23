@@ -32,7 +32,6 @@ namespace RadioTerm
                         break;
                     case AvailableActions.PlayerAction.Add:
                         player.RadioStationManager.AddStation(engine.AddStationMenu());
-                        //engine.DrawMain(player.RadioStationManager.Stations);
                         break;
                     case AvailableActions.PlayerAction.VolumeDown:
                         player.VolumeDown();
@@ -42,19 +41,15 @@ namespace RadioTerm
                         break;
                     case AvailableActions.PlayerAction.Next:
                         player.Next();
-                        //engine.DrawMain(player.RadioStationManager.Stations);
                         break;
                     case AvailableActions.PlayerAction.Previous:
                         player.Previous();
-                        //engine.DrawMain(player.RadioStationManager.Stations);
                         break;
                     case AvailableActions.PlayerAction.Pause:
                         player.Pause();
-                        //engine.DrawMain(player.RadioStationManager.Stations);
                         break;
                     case AvailableActions.PlayerAction.Delete:
-                        player.RadioStationManager.DeleteStation(engine.DeleteStationMenu(player.RadioStationManager.Stations));
-                        //engine.DrawMain(player.RadioStationManager.Stations);
+                        player.RadioStationManager.DeleteStation(engine.DeleteStationMenu(player.RadioStationManager.Stations));                       
                         break;
                     default:
                         break;
