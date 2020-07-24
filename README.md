@@ -8,7 +8,7 @@ Press a to add a station. You will be asked to provide a name and a URL. Make su
 
 ## Files being created
 
-RadioTerm saves your station in a .json file under `C:\Users\[YourUsername]\AppData\Roaming\RadioTerm`. There will be no other files being created.
+RadioTerm saves your station in a .json file under `%appdata%\RadioTerm`. There will be no other files being created.
 
 # Building the project
 
