@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.VisualStyles;
@@ -13,8 +14,9 @@ namespace RadioTerm
         private void DrawHeader()
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine("Welcome to RadioTerm");
-            DrawBar();
+            string title = "Welcome to RadioTerm";
+            WriteToCenter(title,1);
+            DrawBar(2,title.Length +18);
             Console.WriteLine();
             Console.WriteLine();
             Console.ResetColor();
@@ -22,22 +24,47 @@ namespace RadioTerm
 
         private void DrawStations(IEnumerable<Station> sts)
         {
-            foreach (var station in sts)
+            for (int i = 0; i < sts.Count(); i++)
             {
-                if(station.Active)
+                var station = sts.ElementAt(i);
+                if (station.Active)
                 {
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.WriteLine($"Now playing {station.Name}");
-                    Console.ResetColor();
+                    Console.Title = $"Playing {station.Name}";
                 }
                 else
                 {
-                    Console.WriteLine(station.Name);
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
+                WriteToCenter(station.Name, i + 4);
+                Console.ForegroundColor = ConsoleColor.Gray;
+
             }
         }
         private void DrawBar()
         {
+            for (int i = 0; i < Console.BufferWidth; i++)
+            {
+                Console.Write("-");
+            }
+        }
+        private void DrawBar(int row, int length)
+        {
+            if (length % 2 == 0)
+            {
+                length++;
+            }
+            int middle = Console.WindowWidth / 2;
+            Console.SetCursorPosition(middle - (int)Math.Ceiling(length / 2.0), row);
+            for (int i = 0; i <= length; i++)
+            {
+                Console.Write("-");
+            }
+        }
+
+        private void DrawBar(int row)
+        {
+            Console.SetCursorPosition(0, row);
             for (int i = 0; i < Console.BufferWidth; i++)
             {
                 Console.Write("-");
@@ -55,13 +82,15 @@ namespace RadioTerm
 
         private void DrawFooter()
         {
-            int bot = Console.WindowHeight;
-            Console.SetCursorPosition(0, bot - 3);
-            DrawBar();
+            int bot = Console.WindowHeight - 3;
+            DrawBar(bot);
+            string footer = "";
             foreach (var corr in AvailableActions.Correspondence)
             {
-                Console.Write($"{corr.Value} / {corr.Key}   ");
+                footer += $"{corr.Value} / {corr.Key}   ";
             }
+            WriteToCenter(footer, bot+1);
+
         }
 
         public void DrawMain(IEnumerable<Station> stations)
@@ -136,6 +165,14 @@ namespace RadioTerm
                 k = Console.ReadKey();
             } while (k.Key != ConsoleKey.Enter);
             return stationList[index].Name;
+        }
+
+        private void WriteToCenter(string st, int row)
+        {
+            int middle = Console.WindowWidth / 2 - st.Length / 2;
+            Console.SetCursorPosition(middle, row);
+            Console.WriteLine(st);
+
         }
 
     }

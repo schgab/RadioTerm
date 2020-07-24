@@ -15,7 +15,7 @@ namespace RadioTerm
             DisplayEngine engine = new DisplayEngine();
             Player player = new Player(LoadUpAndEnd.Load("stations.json"));
             AvailableActions.PlayerAction k;
-            bool run = true;
+            bool run = true;            
             player.PlayLastActive();
             do
             {
