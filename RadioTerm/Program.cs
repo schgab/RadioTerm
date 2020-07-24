@@ -13,7 +13,7 @@ namespace RadioTerm
         static void Main(string[] args)
         {
             DisplayEngine engine = new DisplayEngine();
-            Player player = new Player(LoadUpAndEnd.Load("stations.json"));
+            Player player = new Player(LoadUpAndEnd.Load());
             AvailableActions.PlayerAction k;
             bool run = true;            
             player.PlayLastActive();
@@ -56,7 +56,7 @@ namespace RadioTerm
                 }
 
             } while (run);
-            LoadUpAndEnd.Save(player.RadioStationManager, "stations.json");
+            LoadUpAndEnd.Save(player.RadioStationManager);
         }
 
     }

@@ -11,10 +11,18 @@ namespace RadioTerm
 {
     public static class LoadUpAndEnd
     {
-        public static void Save(object obj, string path)
+
+        private static string ApplicationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) , "RadioTerm");
+        private static string StationsJsonPath = Path.Combine(ApplicationFolder ,"stations.json");
+
+        public static void Save(object obj)
         {
+            if (!Directory.Exists(ApplicationFolder))
+            {
+                Directory.CreateDirectory(ApplicationFolder);
+            }
             var jsonString = JsonConvert.SerializeObject(obj, Formatting.Indented);
-            File.WriteAllText(path, jsonString);
+            File.WriteAllText(StationsJsonPath, jsonString);
         }
 
         private static T ReadJsonObject<T>(string path)
@@ -22,11 +30,11 @@ namespace RadioTerm
             return JsonConvert.DeserializeObject<T>(File.ReadAllText(path));
         }
 
-        public static StationManager Load(string path)
+        public static StationManager Load()
         {
-            if (File.Exists(path))
+            if (File.Exists(StationsJsonPath))
             {
-                var manager = ReadJsonObject<StationManager>(path);
+                var manager = ReadJsonObject<StationManager>(StationsJsonPath);
                 //Fix reference to object in list
                 manager.PlayingStation = manager.Stations.Where(c => c.Url == manager.PlayingStation.Url).FirstOrDefault();
                 return manager;
