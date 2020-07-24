@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 
 namespace RadioTerm
 {
@@ -42,6 +43,16 @@ namespace RadioTerm
                 Console.Write("-");
             }
         }
+
+        public void ShowAddingError()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("The station you tried to add cannot be played. Check the url");
+            Console.ResetColor();
+            Console.ReadLine();
+        }
+
         private void DrawFooter()
         {
             int bot = Console.WindowHeight;

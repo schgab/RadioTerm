@@ -22,21 +22,27 @@ namespace RadioTerm
         /// Adds a Station object to the list
         /// </summary>
         /// <param name="station"></param>
-        public void AddStation(Station station)
+        public bool AddStation(Station station)
         {
-            Stations.Add(station);
-            if (PlayingStation == null)
+            if (PlayabilityChecker.CheckIfPlayable(station))
             {
-                PlayingStation = station;
+                Stations.Add(station);
+                if (PlayingStation == null)
+                {
+                    PlayingStation = station;
+                }
+                return true;
             }
+            return false;
+            
         }
         /// <summary>
         /// Adds a new station with the supplied name and url
         /// </summary>
         /// <param name="tuple"></param>
-        public void AddStation((string name,string url) tuple)
+        public bool AddStation((string name,string url) tuple)
         {
-            AddStation(new Station(tuple.name,tuple.url));
+            return AddStation(new Station(tuple.name,tuple.url));
         }
 
         /// <summary>

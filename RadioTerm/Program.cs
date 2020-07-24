@@ -27,7 +27,11 @@ namespace RadioTerm
                         run = false;
                         break;
                     case AvailableActions.PlayerAction.Add:
-                        player.RadioStationManager.AddStation(engine.AddStationMenu());
+                        var added = player.RadioStationManager.AddStation(engine.AddStationMenu());
+                        if (!added)
+                        {
+                            engine.ShowAddingError();
+                        }
                         break;
                     case AvailableActions.PlayerAction.VolumeDown:
                         player.VolumeDown();
