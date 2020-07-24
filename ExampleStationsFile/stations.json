@@ -1,19 +1,17 @@
 {
   "Stations": [
     {
-      "Name": "Suedtirol 1",
-      "Url": "http://str2.creacast.com/sudtirol1a",
-      "Active": false
+      "Id": 1,
+      "Name": "NRJ",
+      "Url": "https://pub0101.101.ru:8000/stream/air/aac/64/99",
+      "Active": true
     },
     {
-      "Name": "oe3",
-      "Url": "http://185.85.28.166:8000",
-      "Active": true
+      "Id": 2,
+      "Name": "Rock FM",
+      "Url": "https://nashe1.hostingradio.ru:80/rock-64.mp3",
+      "Active": false
     }
   ],
-  "PlayingStation": {
-    "Name": "oe3",
-    "Url": "http://185.85.28.166:8000",
-    "Active": true
-  }
+  "LastSelectedStationId": 1
 }
