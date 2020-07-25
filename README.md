@@ -12,7 +12,7 @@ RadioTerm saves your station in a .json file under `C:\Users\[YourUsername]\AppD
 
 # Building the project
 
-Clone the repository and compile it using VS2019.
+Clone the repository <b>clean</b> solution then build it using VS2019.
 
 RadioTerm uses following NuGet packages:
 - NAudio
