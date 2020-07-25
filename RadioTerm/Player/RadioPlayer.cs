@@ -1,6 +1,7 @@
 ﻿using RadioTerm.IO;
 using RadioTerm.Player.SoundEngine;
 using RadioTerm.Rendering;
+using RadioTerm.Rendering.Message;
 using System;
 
 namespace RadioTerm.Player
@@ -39,7 +40,10 @@ namespace RadioTerm.Player
                     case AvailableActions.PlayerAction.Quit:
                         break;
                     case AvailableActions.PlayerAction.Add:
-                        StationManager.AddStation(_displayEngine.AddStation());
+                        if(!StationManager.AddStation(_displayEngine.AddStation()))
+                        {
+                            _displayEngine.ShowMessage(new Message("This station could not be added. Check URL", MessageType.Critical));
+                        }
                         break;
                     case AvailableActions.PlayerAction.VolumeDown:
                         _soundEngine.VolumeDown();
