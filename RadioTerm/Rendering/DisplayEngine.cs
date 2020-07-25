@@ -1,4 +1,7 @@
-﻿using System;
+﻿using RadioTerm.Helpers;
+using RadioTerm.Player;
+using RadioTerm.Rendering.Message;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.VisualStyles;
 
-namespace RadioTerm
+namespace RadioTerm.Rendering
 {
-    public class DisplayEngine
+    public sealed class DisplayEngine : IDisplayEngine
     {
 
         private void DrawHeader()
@@ -71,15 +74,6 @@ namespace RadioTerm
             }
         }
 
-        public void ShowAddingError()
-        {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("The station you tried to add cannot be played. Check the url");
-            Console.ResetColor();
-            Console.ReadLine();
-        }
-
         private void DrawFooter()
         {
             int bot = Console.WindowHeight - 3;
@@ -87,13 +81,13 @@ namespace RadioTerm
             string footer = "";
             foreach (var corr in AvailableActions.Correspondence)
             {
-                footer += $"{corr.Value} / {corr.Key}   ";
+                footer += $"{corr.Value} | {corr.Key}   ";
             }
             WriteToCenter(footer, bot+1);
 
         }
 
-        public void DrawMain(IEnumerable<Station> stations)
+        public void Draw(IEnumerable<Station> stations)
         {
             Console.Clear();
             DrawHeader();
@@ -101,7 +95,7 @@ namespace RadioTerm
             DrawFooter();
         }
 
-        public (string name,string url) AddStationMenu()
+        public (string name,string url) AddStation()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -114,57 +108,40 @@ namespace RadioTerm
             return (name, url);
 
         }
-        public string DeleteStationMenu(IEnumerable<Station> stations)
+        public int DeleteStation(IEnumerable<Station> stations)
         {
             var stationList = stations.ToList();
-            var activeStation = stationList.Where(s => s.Active).FirstOrDefault();
-            if (activeStation == null)
-            {
-                return "";
-            }
-            stationList.Remove(activeStation);
-            int index = 0;
+            var selectedStation = stationList[0];
             ConsoleKeyInfo k = new ConsoleKeyInfo() ;
             do
             {
                 Console.Clear();
                 if (k.Key == ConsoleKey.UpArrow)
                 {
-                    if(index == 0)
-                    {
-                        index = stations.Count() - 1;
-                    }
-                    else
-                    {
-                        index--;
-                    }
+                    selectedStation = stationList.Previous(selectedStation);
                 }
                 else if(k.Key == ConsoleKey.DownArrow)
                 {
-                    if(index == stationList.Count() - 1)
-                    {
-                        index = 0;
-                    }
-                    else
-                    {
-                        index++;
-                    }
+                    selectedStation = stationList.Next(selectedStation);
                 }
-                for (int i = 0; i < stationList.Count(); i++)
+                foreach (var st in stationList)
                 {
-                    if (i == index)
+                    string tobePrinted = st.Name;
+                    if (st.Active)
+                    {
+                        tobePrinted = $"{st.Name} [Playing]";
+                    }
+                    if (st == selectedStation)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                     }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                    }
-                    Console.WriteLine(stationList[i].Name);
+                    Console.WriteLine(tobePrinted);
+                    Console.ResetColor();
+                    
                 }
                 k = Console.ReadKey();
             } while (k.Key != ConsoleKey.Enter);
-            return stationList[index].Name;
+            return selectedStation.DefiniteId;
         }
 
         private void WriteToCenter(string st, int row)
@@ -175,5 +152,28 @@ namespace RadioTerm
 
         }
 
+        public void ShowMessage(IMessage message)
+        {
+            Console.ResetColor();
+            Console.Clear();
+            switch (message.Type)
+            {
+                case MessageType.Info:
+                    Console.WriteLine(message.MessageString);
+                    break;
+                case MessageType.Warning:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(message.MessageString);
+                    break;
+                case MessageType.Critical:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(message.MessageString);
+                    break;
+                default:
+                    break;
+            }
+            Console.ResetColor();
+            Console.ReadLine();
+        }
     }
 }
