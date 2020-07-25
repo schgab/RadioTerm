@@ -1,15 +1,16 @@
 ﻿using NAudio.Wave;
+using RadioTerm.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RadioTerm
+namespace RadioTerm.Helpers
 {
     public static class PlayabilityChecker
     {
-        public static bool CheckIfPlayable(Station s)
+        public static bool IsPlayable(this Station s)
         {
             try
             {

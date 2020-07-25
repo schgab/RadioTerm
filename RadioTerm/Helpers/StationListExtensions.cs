@@ -1,13 +1,14 @@
-﻿using System;
+﻿using RadioTerm.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 
-namespace RadioTerm
+namespace RadioTerm.Helpers
 {
-    public static class Extensions
+    public static class StationListExtensions
     {
         public static Station Next(this List<Station> stations, Station current)
         {
