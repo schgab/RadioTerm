@@ -4,10 +4,6 @@ using RadioTerm.Rendering.Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms.VisualStyles;
 
 namespace RadioTerm.Rendering
 {
@@ -18,8 +14,8 @@ namespace RadioTerm.Rendering
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             string title = "Welcome to RadioTerm";
-            WriteToCenter(title,1);
-            DrawBar(2,title.Length +18);
+            WriteToCenter(title, 1);
+            DrawBar(2, title.Length + 18);
             Console.WriteLine();
             Console.WriteLine();
             Console.ResetColor();
@@ -83,7 +79,7 @@ namespace RadioTerm.Rendering
             {
                 footer += $"{corr.Value} | {corr.Key}   ";
             }
-            WriteToCenter(footer, bot+1);
+            WriteToCenter(footer, bot + 1);
 
         }
 
@@ -95,7 +91,7 @@ namespace RadioTerm.Rendering
             DrawFooter();
         }
 
-        public (string name,string url) AddStation()
+        public (string name, string url) AddStation()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -112,7 +108,7 @@ namespace RadioTerm.Rendering
         {
             var stationList = stations.ToList();
             var selectedStation = stationList[0];
-            ConsoleKeyInfo k = new ConsoleKeyInfo() ;
+            ConsoleKeyInfo k = new ConsoleKeyInfo();
             do
             {
                 Console.Clear();
@@ -120,7 +116,7 @@ namespace RadioTerm.Rendering
                 {
                     selectedStation = stationList.Previous(selectedStation);
                 }
-                else if(k.Key == ConsoleKey.DownArrow)
+                else if (k.Key == ConsoleKey.DownArrow)
                 {
                     selectedStation = stationList.Next(selectedStation);
                 }
@@ -137,7 +133,7 @@ namespace RadioTerm.Rendering
                     }
                     Console.WriteLine(tobePrinted);
                     Console.ResetColor();
-                    
+
                 }
                 k = Console.ReadKey();
             } while (k.Key != ConsoleKey.Enter);

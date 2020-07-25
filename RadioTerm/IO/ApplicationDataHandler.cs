@@ -1,11 +1,8 @@
 ﻿using Newtonsoft.Json;
 using RadioTerm.Player;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace RadioTerm.IO
@@ -13,8 +10,8 @@ namespace RadioTerm.IO
     public static class ApplicationDataHandler
     {
 
-        private static string ApplicationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) , "RadioTerm");
-        private static string StationsJsonPath = Path.Combine(ApplicationFolder ,"stations.json");
+        private static string ApplicationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RadioTerm");
+        private static string StationsJsonPath = Path.Combine(ApplicationFolder, "stations.json");
 
         public static void Save(object obj)
         {
@@ -36,8 +33,6 @@ namespace RadioTerm.IO
             if (File.Exists(StationsJsonPath))
             {
                 var manager = ReadJsonObject<StationManager>(StationsJsonPath);
-                //Fix reference to object in list
-                manager.PlayingStation = manager.Stations.Where(c => c.Url == manager.PlayingStation.Url).FirstOrDefault();
                 return manager;
             }
             else

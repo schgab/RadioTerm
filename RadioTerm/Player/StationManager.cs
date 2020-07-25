@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RadioTerm.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RadioTerm.Player
 {
@@ -46,15 +43,15 @@ namespace RadioTerm.Player
                 return true;
             }
             return false;
-            
+
         }
         /// <summary>
         /// Adds a new station with the supplied name and url
         /// </summary>
         /// <param name="tuple"></param>
-        public bool AddStation((string name,string url) tuple)
+        public bool AddStation((string name, string url) tuple)
         {
-            return AddStation(new Station(tuple.name,tuple.url,NextDefiniteID()));
+            return AddStation(new Station(tuple.name, tuple.url, NextDefiniteID()));
         }
 
         /// <summary>
