@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using RadioTerm.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RadioTerm
+namespace RadioTerm.Player
 {
     public class StationManager
     {
@@ -18,13 +20,23 @@ namespace RadioTerm
             Stations = new List<Station>();
         }
 
+        [JsonConstructor]
+        public StationManager(List<Station> stations, Station playingStation)
+        {
+            Stations = stations ?? new List<Station>();
+            if (Stations.Count > 0 && playingStation is Station)
+            {
+                PlayingStation = Stations.Single(s => s.DefiniteId == playingStation.DefiniteId);
+            }
+        }
+
         /// <summary>
         /// Adds a Station object to the list
         /// </summary>
         /// <param name="station"></param>
         public bool AddStation(Station station)
         {
-            if (PlayabilityChecker.CheckIfPlayable(station))
+            if (station.IsPlayable())
             {
                 Stations.Add(station);
                 if (PlayingStation == null)
@@ -42,7 +54,7 @@ namespace RadioTerm
         /// <param name="tuple"></param>
         public bool AddStation((string name,string url) tuple)
         {
-            return AddStation(new Station(tuple.name,tuple.url));
+            return AddStation(new Station(tuple.name,tuple.url,NextDefiniteID()));
         }
 
         /// <summary>
@@ -82,18 +94,26 @@ namespace RadioTerm
         }
 
         /// <summary>
-        /// Deletes all stations with the specified name
+        /// Deletes the stations with the specified id
         /// </summary>
         /// <param name="name"></param>
-        public void DeleteStation(string name)
+        public void DeleteStation(int id)
         {
-            var st = Stations.FirstOrDefault(s => s.Name == name);
+            var st = Stations.FirstOrDefault(s => s.DefiniteId == id);
             if (st != null)
             {
                 Stations.Remove(st);
             }
         }
 
+        private int NextDefiniteID()
+        {
+            if (Stations.Count > 0)
+            {
+                return Stations.OrderByDescending(s => s.DefiniteId).Select(s => s.DefiniteId).First() + 1;
+            }
+            return 1;
+        }
 
 
     }

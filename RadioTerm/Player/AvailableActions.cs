@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RadioTerm
+namespace RadioTerm.Player
 {
     public static class AvailableActions
     {
