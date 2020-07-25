@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RadioTerm.Player
 {
@@ -45,7 +43,7 @@ namespace RadioTerm.Player
             return Correspondence.FirstOrDefault(s => s.Value[0] == info.KeyChar).Key;
         }
 
-        
+
 
     }
 }

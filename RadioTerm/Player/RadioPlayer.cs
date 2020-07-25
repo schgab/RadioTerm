@@ -1,12 +1,7 @@
-﻿using NAudio.Wave;
-using RadioTerm.IO;
+﻿using RadioTerm.IO;
 using RadioTerm.Player.SoundEngine;
 using RadioTerm.Rendering;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RadioTerm.Player
 {
@@ -25,7 +20,7 @@ namespace RadioTerm.Player
             _soundEngine = soundEngine;
             StationManager = ApplicationDataHandler.Load();
         }
-          
+
         public void Run()
         {
             _soundEngine.Play(StationManager.PlayingStation);
@@ -64,7 +59,7 @@ namespace RadioTerm.Player
                     default:
                         break;
                 }
-                
+
 
             } while (playerAction != AvailableActions.PlayerAction.Quit);
             ApplicationDataHandler.Save(StationManager);

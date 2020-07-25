@@ -1,16 +1,22 @@
 {
   "Stations": [
     {
+      "Name": "oe3",
+      "Url": "http://185.85.28.166:8000",
+      "Active": true,
+      "DefiniteId": 1
+    },
+    {
       "Name": "sud1",
       "Url": "http://str2.creacast.com/sudtirol1a",
       "Active": false,
-      "DefiniteId": 5
+      "DefiniteId": 2
     }
   ],
   "PlayingStation": {
     "Name": "oe3",
     "Url": "http://185.85.28.166:8000",
-    "Active": false,
-    "DefiniteId": 4
+    "Active": true,
+    "DefiniteId": 1
   }
 }
