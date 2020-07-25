@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RadioTerm.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -100,6 +101,11 @@ namespace RadioTerm.Player
             if (st != null)
             {
                 Stations.Remove(st);
+                if (st == PlayingStation)
+                {
+                    PlayingStation = Next();
+                    OnPlayingStationDeleted();
+                }
             }
         }
 
@@ -112,6 +118,12 @@ namespace RadioTerm.Player
             return 1;
         }
 
+        public event EventHandler PlayingStationDeleted;
+
+        private void OnPlayingStationDeleted()
+        {
+            PlayingStationDeleted?.Invoke(this,EventArgs.Empty);
+        }
 
     }
 }

@@ -19,7 +19,10 @@ namespace RadioTerm.Player
             _displayEngine = displayEngine;
             _soundEngine = soundEngine;
             StationManager = ApplicationDataHandler.Load();
+            StationManager.PlayingStationDeleted += StationManager_PlayingStationDeleted;
         }
+
+        private void StationManager_PlayingStationDeleted(object sender, EventArgs e) => _soundEngine.Stop();
 
         public void Run()
         {
