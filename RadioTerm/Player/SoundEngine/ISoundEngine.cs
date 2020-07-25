@@ -4,19 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RadioTerm
+namespace RadioTerm.Player.SoundEngine
 {
-    public interface IPlayer
+    public interface ISoundEngine
     {
-
-        bool HasSomethingToPlay
-        {
-            get;
-            
-        }
-        void Play(Station s);
+        void Play(Station stationToPlay);
         void Stop();
-        void Pause();
+        void Pause(Station currentStation);
         void VolumeDown();
         void VolumeUp();
     }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RadioTerm.Player;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace RadioTerm
+namespace RadioTerm.IO
 {
-    public static class LoadUpAndEnd
+    public static class ApplicationDataHandler
     {
 
         private static string ApplicationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) , "RadioTerm");
