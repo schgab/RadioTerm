@@ -1,3 +1,4 @@
+[![Release badge](https://img.shields.io/badge/release-latest-brightgreen.svg)](https://github.com/schgab/RadioTerm/releases/latest)
 # What is RadioTerm?
 
 RadioTerm is a simple to use and lightweight console online radio player for Windows.
