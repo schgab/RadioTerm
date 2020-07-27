@@ -26,6 +26,6 @@ RadioTerm uses following NuGet packages:
 
 RadioTerm provides two releases:
 - A self contained .exe written in .NET Framework 4.6. [.NET Framework release](https://github.com/schgab/RadioTerm/releases/tag/v2.0)
-- A .NET Core 3.1 release. [.NET Core release](https://github.com/schgab/RadioTerm/releases/tag/v2.1)
+- A .NET Core 3.1 release. [.NET Core release](https://github.com/schgab/RadioTerm/releases/latest)
 
 <b>Note</b>: The .NET Framework release (tag v2.0) will not be updated. Future releases will be in net core only.
