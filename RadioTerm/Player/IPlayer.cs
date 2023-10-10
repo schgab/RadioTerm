@@ -1,8 +1,6 @@
-﻿namespace RadioTerm.Player
-{
-    public interface IPlayer
-    {
-        void Run();
+﻿namespace RadioTerm.Player;
 
-    }
+public interface IPlayer
+{
+    void Run();
 }

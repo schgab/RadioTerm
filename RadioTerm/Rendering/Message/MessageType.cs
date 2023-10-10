@@ -1,9 +1,8 @@
-﻿namespace RadioTerm.Rendering.Message
+﻿namespace RadioTerm.Rendering.Message;
+
+public enum MessageType
 {
-    public enum MessageType
-    {
-        Info,
-        Warning,
-        Critical
-    }
+    Info,
+    Warning,
+    Critical
 }

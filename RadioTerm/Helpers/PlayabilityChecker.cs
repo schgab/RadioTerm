@@ -1,32 +1,23 @@
-﻿using NAudio.Wave;
+﻿using System.Threading;
+using LibVLCSharp.Shared;
 using RadioTerm.Player;
-using System;
 
-namespace RadioTerm.Helpers
+namespace RadioTerm.Helpers;
+
+public static class PlayabilityChecker
 {
-    public static class PlayabilityChecker
+    public static bool IsPlayable(this Station station)
     {
-        public static bool IsPlayable(this Station s)
-        {
-            try
-            {
-                using (var wo = new WaveOutEvent())
-                using (var mf = new MediaFoundationReader(s.Url))
-                {
-                    float woVol = wo.Volume;
-                    wo.Init(mf);
-                    wo.Volume = 0;
-                    wo.Play();
-                    wo.Stop();
-                    wo.Volume = woVol;
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
-
-                return false;
-            }
-        }
+        using var vlc = new LibVLC();
+        using var player = new MediaPlayer(vlc);
+        vlc.Log += (_, _) => { }; // disable default log handler
+        var previousVolume = player.Volume;
+        player.Volume = 0;
+        player.Play(new Media(vlc, station.Url, FromType.FromLocation));
+        Thread.Sleep(1000); // dirty hack to let vlc some time to load the stream
+        var playable = player.IsPlaying;
+        player.Stop();
+        player.Volume = previousVolume; // restore the volume
+        return playable;
     }
 }

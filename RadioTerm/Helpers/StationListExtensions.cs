@@ -1,30 +1,31 @@
-﻿using RadioTerm.Player;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using RadioTerm.Player;
 
+namespace RadioTerm.Helpers;
 
-namespace RadioTerm.Helpers
+public static class StationListExtensions
 {
-    public static class StationListExtensions
+    public static Station Next(this List<Station> stations, Station current)
     {
-        public static Station Next(this List<Station> stations, Station current)
+        int index = stations.IndexOf(current);
+        index++;
+        if (index == stations.Count)
         {
-            int index = stations.IndexOf(current);
-            index++;
-            if (index == stations.Count)
-            {
-                index = 0;
-            }
-            return stations[index];
+            index = 0;
         }
-        public static Station Previous(this List<Station> stations, Station current)
+
+        return stations[index];
+    }
+
+    public static Station Previous(this List<Station> stations, Station current)
+    {
+        int index = stations.IndexOf(current);
+        index--;
+        if (index < 0)
         {
-            int index = stations.IndexOf(current);
-            index--;
-            if (index < 0)
-            {
-                index = stations.Count - 1;
-            }
-            return stations[index];
+            index = stations.Count - 1;
         }
+
+        return stations[index];
     }
 }

@@ -1,129 +1,120 @@
-﻿using Newtonsoft.Json;
-using RadioTerm.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using RadioTerm.Helpers;
 
-namespace RadioTerm.Player
+namespace RadioTerm.Player;
+
+public class StationManager
 {
-    public class StationManager
+    public List<Station> Stations { get; private set; }
+
+    public Station PlayingStation { get; set; }
+
+
+    public StationManager()
     {
-        public List<Station> Stations { get; private set; }
+        Stations = new List<Station>();
+    }
 
-        public Station PlayingStation { get; set; }
-
-
-        public StationManager()
+    [JsonConstructor]
+    public StationManager(List<Station> stations, Station playingStation)
+    {
+        Stations = stations ?? new List<Station>();
+        if (Stations.Count > 0 && playingStation is not null)
         {
-            Stations = new List<Station>();
+            PlayingStation = Stations.Single(s => s.Id == playingStation.Id);
         }
+    }
 
-        [JsonConstructor]
-        public StationManager(List<Station> stations, Station playingStation)
+    /// <summary>
+    /// Adds a Station object to the list
+    /// </summary>
+    /// <param name="station"></param>
+    public bool AddStation(Station station)
+    {
+        if (!station.IsPlayable())
         {
-            Stations = stations ?? new List<Station>();
-            if (Stations.Count > 0 && playingStation is Station)
-            {
-                PlayingStation = Stations.Single(s => s.DefiniteId == playingStation.DefiniteId);
-            }
-        }
-
-        /// <summary>
-        /// Adds a Station object to the list
-        /// </summary>
-        /// <param name="station"></param>
-        public bool AddStation(Station station)
-        {
-            if (station.IsPlayable())
-            {
-                Stations.Add(station);
-                if (PlayingStation == null)
-                {
-                    PlayingStation = station;
-                }
-                return true;
-            }
             return false;
-
         }
-        /// <summary>
-        /// Adds a new station with the supplied name and url
-        /// </summary>
-        /// <param name="tuple"></param>
-        public bool AddStation((string name, string url) tuple)
+
+        Stations.Add(station);
+        PlayingStation ??= station;
+        return true;
+    }
+
+    /// <summary>
+    /// Adds a new station with the supplied name and url
+    /// </summary>
+    /// <param name="tuple"></param>
+    public bool AddStation((string name, string url) tuple)
+    {
+        return AddStation(new Station(tuple.name, tuple.url));
+    }
+
+    /// <summary>
+    /// Returns the next station in the list or null if the list is empty
+    /// </summary>
+    /// <returns></returns>
+    public Station Next()
+    {
+        if (Stations.Count == 0)
         {
-            return AddStation(new Station(tuple.name, tuple.url, NextDefiniteID()));
+            return null;
         }
 
-        /// <summary>
-        /// Returns the next station in the list or null if the list is empty
-        /// </summary>
-        /// <returns></returns>
-        public Station Next()
+        PlayingStation.Active = false;
+        PlayingStation = Stations.Next(PlayingStation);
+        PlayingStation.Active = true;
+        return PlayingStation;
+    }
+
+    /// <summary>
+    /// Returns the previous station in the list or null if the list is empty
+    /// </summary>
+    /// <returns></returns>
+    public Station Previous()
+    {
+        if (Stations.Count == 0)
         {
-            if (Stations.Count == 0)
-            {
-                return null;
-            }
-            PlayingStation.Active = false;
-            PlayingStation = Stations.Next(PlayingStation);
-            PlayingStation.Active = true;
-            return PlayingStation;
+            return null;
         }
-        /// <summary>
-        /// Returns the previous station in the list or null if the list is empty
-        /// </summary>
-        /// <returns></returns>
-        public Station Previous()
+
+        PlayingStation.Active = false;
+        PlayingStation = Stations.Previous(PlayingStation);
+        PlayingStation.Active = true;
+        return PlayingStation;
+    }
+
+    public void ToggleActive()
+    {
+        PlayingStation.Active = !PlayingStation.Active;
+    }
+
+    /// <summary>
+    /// Deletes the stations with the specified id
+    /// </summary>
+    /// <param name="id"></param>
+    public void DeleteStation(Guid id)
+    {
+        var st = Stations.FirstOrDefault(s => s.Id == id);
+        if (st is null)
         {
-            if (Stations.Count == 0)
-            {
-                return null;
-            }
-            PlayingStation.Active = false;
-            PlayingStation = Stations.Previous(PlayingStation);
-            PlayingStation.Active = true;
-            return PlayingStation;
+            return;
         }
-
-        public void ToggleActive()
+        Stations.Remove(st);
+        if (st == PlayingStation)
         {
-            PlayingStation.Active = !PlayingStation.Active;
+            PlayingStation = Next();
+            OnPlayingStationDeleted();
         }
+    }
 
-        /// <summary>
-        /// Deletes the stations with the specified id
-        /// </summary>
-        /// <param name="name"></param>
-        public void DeleteStation(int id)
-        {
-            var st = Stations.FirstOrDefault(s => s.DefiniteId == id);
-            if (st != null)
-            {
-                Stations.Remove(st);
-                if (st == PlayingStation)
-                {
-                    PlayingStation = Next();
-                    OnPlayingStationDeleted();
-                }
-            }
-        }
+    public event EventHandler PlayingStationDeleted;
 
-        private int NextDefiniteID()
-        {
-            if (Stations.Count > 0)
-            {
-                return Stations.OrderByDescending(s => s.DefiniteId).Select(s => s.DefiniteId).First() + 1;
-            }
-            return 1;
-        }
-
-        public event EventHandler PlayingStationDeleted;
-
-        private void OnPlayingStationDeleted()
-        {
-            PlayingStationDeleted?.Invoke(this,EventArgs.Empty);
-        }
-
+    private void OnPlayingStationDeleted()
+    {
+        PlayingStationDeleted?.Invoke(this, EventArgs.Empty);
     }
 }

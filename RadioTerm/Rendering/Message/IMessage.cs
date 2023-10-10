@@ -1,9 +1,8 @@
-﻿namespace RadioTerm.Rendering.Message
-{
-    public interface IMessage
-    {
-        string MessageString { get; }
+﻿namespace RadioTerm.Rendering.Message;
 
-        MessageType Type { get; }
-    }
+public interface IMessage
+{
+    string MessageString { get; }
+
+    MessageType Type { get; }
 }

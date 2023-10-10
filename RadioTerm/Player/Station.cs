@@ -1,17 +1,18 @@
-﻿namespace RadioTerm.Player
-{
-    public class Station
-    {
-        public string Name { get; set; }
-        public string Url { get; set; }
-        public bool Active { get; set; }
+﻿using System;
 
-        public int DefiniteId { get; }
-        public Station(string name, string url, int definiteid)
-        {
-            Name = name;
-            Url = url;
-            DefiniteId = definiteid;
-        }
+namespace RadioTerm.Player;
+
+public class Station
+{
+    public string Name { get; }
+    public string Url { get; }
+    public bool Active { get; set; }
+
+    public Guid Id { get; init; } = Guid.NewGuid();
+
+    public Station(string name, string url)
+    {
+        Name = name;
+        Url = url;
     }
 }

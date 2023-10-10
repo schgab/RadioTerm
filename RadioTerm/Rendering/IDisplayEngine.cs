@@ -1,16 +1,16 @@
-﻿using RadioTerm.Player;
-using RadioTerm.Rendering.Message;
+﻿using System;
 using System.Collections.Generic;
+using RadioTerm.Player;
+using RadioTerm.Rendering.Message;
 
-namespace RadioTerm.Rendering
+namespace RadioTerm.Rendering;
+
+public interface IDisplayEngine
 {
-    public interface IDisplayEngine
-    {
-        void Draw(IEnumerable<Station> stations);
-        int DeleteStation(IEnumerable<Station> stations);
+    void Draw(IEnumerable<Station> stations);
+    Guid DeleteStation(IEnumerable<Station> stations);
 
-        void ShowMessage(IMessage message);
+    void ShowMessage(IMessage message);
 
-        (string name, string url) AddStation();
-    }
+    (string name, string url) AddStation();
 }
