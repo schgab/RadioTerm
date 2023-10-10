@@ -1,0 +1,36 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: Create Release
+
+on: 
+  push:
+    tags:
+    - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: publish linux-x64 self contained
+      run: dotnet publish -c Release -o linux-x64-standalone -r linux-x64 --self-contained
+    - name: publish linux-x64
+      run: dotnet publish -c Release -o linux-x64 -r linux-x64 --no-self-contained
+    - name: publish win-x64 self contained
+      run: dotnet publish -c Release -o win-x64-standalone -r win-x64 --self-contained  
+    - name: publish win-x64
+      run: dotnet publish -c Release -o win-x64 -r win-x64 --no-self-contained
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "linux-x64-standalone,linux-x64,win-x64-standalone,win-x64"
