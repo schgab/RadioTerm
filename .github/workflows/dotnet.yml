@@ -31,6 +31,30 @@ jobs:
       run: dotnet publish -c Release -o win-x64-standalone -r win-x64 --self-contained  
     - name: publish win-x64
       run: dotnet publish -c Release -o win-x64 -r win-x64 --no-self-contained
+    - name: Archive linux-x64-standalone
+      uses: thedoctor0/zip-release@0.7.1
+      with:
+        type: 'zip'
+        filename: 'linux-x64-standalone.zip'
+        path: linux-x64-standalone
+    - name: Archive linux-x64
+      uses: thedoctor0/zip-release@0.7.1
+      with:
+        type: 'zip'
+        filename: 'linux-x64.zip'
+        path: linux-x64
+    - name: Archive win-x64-standalone
+      uses: thedoctor0/zip-release@0.7.1
+      with:
+        type: 'zip'
+        filename: 'win-x64-standalone.zip'
+        path: win-x64-standalone
+    - name: Archive win-x64
+      uses: thedoctor0/zip-release@0.7.1
+      with:
+        type: 'zip'
+        filename: 'win-x64.zip'
+        path: win-x64
     - uses: ncipollo/release-action@v1
       with:
-        artifacts: "linux-x64-standalone,linux-x64,win-x64-standalone,win-x64"
+        artifacts: "linux-x64-standalone.zip,linux-x64.zip,win-x64-standalone.zip,win-x64.zip"
