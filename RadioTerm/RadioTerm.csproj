@@ -7,7 +7,7 @@
         <ApplicationIcon>RadioTerm.ico</ApplicationIcon>
     </PropertyGroup>
     <ItemGroup>
-        <Content Include="RadioTerm.ico"/>
+        <Content Include="RadioTerm.ico" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="LibVLCSharp">
@@ -15,6 +15,9 @@
         </PackageReference>
         <PackageReference Include="Newtonsoft.Json">
             <Version>13.0.3</Version>
+        </PackageReference>
+        <PackageReference Include="VideoLAN.LibVLC.Windows">
+          <Version>3.0.18</Version>
         </PackageReference>
     </ItemGroup>
 </Project>
