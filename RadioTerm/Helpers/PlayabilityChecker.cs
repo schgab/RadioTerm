@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using LibVLCSharp.Shared;
 using RadioTerm.Player;
 
@@ -13,11 +14,18 @@ public static class PlayabilityChecker
         vlc.Log += (_, _) => { }; // disable default log handler
         var previousVolume = player.Volume;
         player.Volume = 0;
-        player.Play(new Media(vlc, station.Url, FromType.FromLocation));
-        Thread.Sleep(1000); // dirty hack to let vlc some time to load the stream
-        var playable = player.IsPlaying;
-        player.Stop();
-        player.Volume = previousVolume; // restore the volume
-        return playable;
+        try
+        {
+            player.Play(new Media(vlc, station.Url, FromType.FromLocation));
+            Thread.Sleep(1000); // dirty hack to let vlc some time to load the stream
+            var playable = player.IsPlaying;
+            player.Stop();
+            player.Volume = previousVolume; // restore the volume
+            return playable;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }

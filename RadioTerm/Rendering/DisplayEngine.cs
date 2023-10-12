@@ -9,12 +9,16 @@ namespace RadioTerm.Rendering;
 
 public sealed class DisplayEngine : IDisplayEngine
 {
-    private void DrawHeader()
+    private void DrawHeader(int stationCount)
     {
         Console.ForegroundColor = ConsoleColor.DarkYellow;
-        string title = "Welcome to RadioTerm";
+        const string title = "Welcome to RadioTerm";
         WriteToCenter(title, 1);
-        DrawBar(2, title.Length + 18);
+        Console.ResetColor();
+        var stationCollection = $"You have {stationCount} stations in your collection";
+        WriteToCenter(stationCollection,2);
+        // Console.ForegroundColor = ConsoleColor.DarkYellow;
+        DrawBar(3, stationCollection.Length + 18);
         Console.WriteLine();
         Console.WriteLine();
         Console.ResetColor();
@@ -36,7 +40,7 @@ public sealed class DisplayEngine : IDisplayEngine
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
 
-            WriteToCenter(station.Name, i + 4);
+            WriteToCenter(station.Name, i + 5);
             Console.ForegroundColor = ConsoleColor.Gray;
         }
     }
@@ -80,14 +84,17 @@ public sealed class DisplayEngine : IDisplayEngine
 
     public void Draw(IEnumerable<Station> stations)
     {
+        Console.CursorVisible = false;
         Console.Clear();
-        DrawHeader();
-        DrawStations(stations);
+        var stationsEnumerated = stations.ToList();
+        DrawHeader(stationsEnumerated.Count);
+        DrawStations(stationsEnumerated);
         DrawFooter();
     }
 
     public (string name, string url) AddStation()
     {
+        Console.CursorVisible = true;
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.DarkYellow;
         Console.WriteLine("Add a radio");
@@ -107,14 +114,12 @@ public sealed class DisplayEngine : IDisplayEngine
         do
         {
             Console.Clear();
-            if (k.Key == ConsoleKey.UpArrow)
+            selectedStation = k.Key switch
             {
-                selectedStation = stationList.Previous(selectedStation);
-            }
-            else if (k.Key == ConsoleKey.DownArrow)
-            {
-                selectedStation = stationList.Next(selectedStation);
-            }
+                ConsoleKey.UpArrow => stationList.Previous(selectedStation),
+                ConsoleKey.DownArrow => stationList.Next(selectedStation),
+                _ => selectedStation
+            };
 
             foreach (var st in stationList)
             {
