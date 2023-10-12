@@ -3,6 +3,10 @@
 
 RadioTerm is a simple to use and lightweight console online radio player for Windows and Linux.
 
+## Prerequisite
+
+You need libvlc installed on Linux. It should come with a standard installation of VLC Player.
+
 ## Adding a station
 
 Press `a` to add a station. You will be asked to provide a name and a URL. Make sure to provide the URL of the stream itself not the URL of the website, otherwise you'll see an error.
@@ -29,3 +33,5 @@ RadioTerm uses following NuGet packages:
 # Release
 
 Get the latest release [here](https://github.com/schgab/RadioTerm/releases/latest)
+
+Windows: Releases are currently on hold as I need to cherrypick the parts from libvlc that are required.
