@@ -6,6 +6,7 @@ RadioTerm is a simple to use and lightweight console online radio player for Win
 ## Adding a station
 
 Press `a` to add a station. You will be asked to provide a name and a URL. Make sure to provide the URL of the stream itself not the URL of the website, otherwise you'll see an error.
+An easy way of retrieving the stream url is by starting the audiostream on the website and using `[].slice.call(document.getElementsByTagName('audio')).map(el => el.src)` in the browser console to get a list of urls.
 
 ## Deleting a station
 
